@@ -1,0 +1,7 @@
+! configuración para r3
+!! basic settings
+!! routing
+!! dchp 
+!! nat
+!! ntp
+!! acls

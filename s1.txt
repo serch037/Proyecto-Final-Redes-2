@@ -1,0 +1,9 @@
+! configuración para s1
+!! basic settings
+!! switch security
+!! vlans 
+!! inter-vlan routing
+!! dchp 
+!! nat
+!! ntp
+!! acls
