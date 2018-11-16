@@ -1,5 +1,36 @@
 ! configuración para r3
+enable
+configure terminal
 !! basic settings
+no ip domain-lookup
+hostname R3
+enable secret class
+line console 0
+password cisco
+login
+line vty 0 15
+password cisco
+login
+service password-encryption
+banner motd %Unauthorized Access is Prohibited!%
+!
+interface s0/0/1
+description Conection to  R2
+ip address 172.16.23.1 255.255.255.252
+ipv6 address 2001:DB8:ACAD:23:1/64
+no shutdown
+!
+interface loopback 4
+ip address 192.168.4.1 255.255.255.0
+interface loopback 5
+ip address 192.168.5.1 255.255.255.0
+interface loopback 6
+ip address 192.168.6.1 255.255.255.0
+interface loopback 7
+ipv6 address 2001:DB8:ACAD:3::1/64
+!
+ip route 0.0.0.0 0.0.0.0 s0/0/1
+ipv6 route ::/0 s0/0/1
 !! routing
 !! dchp 
 !! nat

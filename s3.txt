@@ -1,9 +1,9 @@
-! configuración para r1
+! configuración para s3
 enable
 configure terminal
 !! basic settings
 no ip domain-lookup
-hostname R1
+hostname S3
 enable secret class
 line console 0
 password cisco
@@ -13,15 +13,17 @@ password cisco
 login
 service password-encryption
 banner motd %Unauthorized Access is Prohibited!%
-interface s0/0/0
-description Conection to  R2
-ip address 172.16.12.1 255.255.255.252
-ipv6 address 2001:DB8:ACAD:12:1/64
-clockrate 128000
-no shutdown 
-ip route 0.0.0.0 0.0.0.0 s0/0/0
-ipv6 route ::/0 s0/0/0
-!! routing
+!! switch security
+!! vlans 
+!! inter-vlan routing
+!! dchp 
+!! nat
+!! ntp
+!! acls
+!! basic settings
+!! switch security
+!! vlans 
+!! inter-vlan routing
 !! dchp 
 !! nat
 !! ntp
