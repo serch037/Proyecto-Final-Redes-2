@@ -41,8 +41,50 @@ no shutdown
 !
 ip route 0.0.0.0 0.0.0.0 G0/0
 ipv6 route ::/0 G0/0
+!!Part3
+!!RIPv2
+router rip
+version 2
+network 10.10.10.10
+network 172.16.12.0
+network 172.16.23.0
+no autosummary
+router rip
+passive-interface loopback 0
+no autosummary
+ipv6 unicast-routing
+interface s0/0/0
+ipv6 rip RIP2 enable
+interface s0/0/1
+ipv6 rip RIP2 enable
+interface g0/0
+ipv6 rip RIP2 enable
+ipv6 router rip RIP2
 !! routing
 !! dchp 
 !! nat
+ip http server
+ip http authentication local
+ip nat inside source static 10.10.10.10 209.165.200.229
+interface g0/0
+ip nat outside
+interface loopback 0
+ip nat inside
+ip nat pool INTERNET 209.165.200.225 209.165.200.228 netmask 255.255.255.248
+ip nat inside source list 1 pool INTERNET
 !! ntp
+feature ntp
+ntp master
+
 !! acls
+access-list 1 permit 192.168.31.0 0.0.0.255
+access-list 1 permit 192.168.33.0 0.0.0.255
+access-list 1 permit 192.168.4.0 0.0.0.255
+
+
+
+
+
+
+
+

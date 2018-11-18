@@ -13,8 +13,26 @@ password cisco
 login
 service password-encryption
 banner motd %Unauthorized Access is Prohibited!%
+!! vlans
+vlan 31
+name Accounting
+vlan 33
+name Engineering
+vlan 99
+name Management
+int vlan 99 192.168.99.3 255.255.255.0
+no shutdown
+ip default gateway 192.168.99.1
+int f0/3
+switchport mode trunk
+switchport trunk native vlan 1
+interface range f0/1-2, f0/4-24, G0/1-2 
+switchport mode access
+int f0/18
+switchport access vlan 33
+interface range f0/1-2, f0/4-17, f0/19-24, G0/1-2 
+shutdown
 !! switch security
-!! vlans 
 !! inter-vlan routing
 !! dchp 
 !! nat

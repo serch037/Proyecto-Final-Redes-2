@@ -31,6 +31,27 @@ ipv6 address 2001:DB8:ACAD:3::1/64
 !
 ip route 0.0.0.0 0.0.0.0 s0/0/1
 ipv6 route ::/0 s0/0/1
+!!Part3
+!!RIPv2
+router rip
+version 2
+network 172.16.23.0
+network 192.168.4.0
+network 192.168.5.0
+network 192.168.6.0
+no autosummary
+router rip
+passive-interface loopback 4
+passive-interface loopback 5
+passive-interface loopback 6
+passive-interface loopback 7
+no autosummary
+ipv6 unicast-routing
+interface s0/0/1
+ipv6 rip RIP3 enable
+interface loopback 7
+ipv6 rip RIP3 enable
+ipv6 router rip RIP3
 !! routing
 !! dchp 
 !! nat

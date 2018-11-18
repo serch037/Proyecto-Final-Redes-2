@@ -29,10 +29,10 @@ switchport trunk native vlan 1
 int f0/5
 switchport mode trunk
 switchport trunk native vlan 1
-interface range f0/1-2, f0/6-24, G0/1-2 
+interface range f0/1-2, f0/4, f0/6-24, G0/1-2 
 switchport mode access
 int f0/6
-switchport access vlan 21
+switchport access vlan 31
 interface range f0/1-2, f0/4, f0/7-24, G0/1-2 
 shutdown
 !! switch security
