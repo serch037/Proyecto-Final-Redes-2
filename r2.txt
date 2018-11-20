@@ -18,20 +18,20 @@ banner motd %Unauthorized Access is Prohibited!%
 interface s0/0/0
 description Conection to  R1
 ip address 172.16.12.2 255.255.255.252
-ipv6 address 2001:DB8:ACAD:12:2/64
+ipv6 address 2001:DB8:ACAD:12::2/64
 no shutdown 
 !
 interface s0/0/1
 description Conection to R3
 ip address 172.16.23.2 255.255.255.252
-ipv6 address 2001:DB8:ACAD:23:2/64
-clockrate 128000
+ipv6 address 2001:DB8:ACAD:23::2/64
+clock rate 128000
 no shutdown 
 !
 interface G0/0
 description Connection to internet
-ip address 209.165.200.224 255.255.255.248
-ipv6 address 2001:DB8:ACAD:2:1/64
+ip address 209.165.200.225 255.255.255.248
+ipv6 address 2001:DB8:ACAD:2::1/64
 no shutdown
 !
 interface loopback 0
@@ -61,30 +61,42 @@ interface g0/0
 ipv6 rip RIP2 enable
 ipv6 router rip RIP2
 !! routing
-!! dchp 
+exit 
+router rip 
+version 2
+network 10.10.10.10
+network 172.16.12.0
+network 172.16.23.0
+passive-interface loopback 0
+no auto-summary
+exit
 !! nat
-ip http server
+username webuser privilege 15 secret cisco12345
+ip htpp server
 ip http authentication local
 ip nat inside source static 10.10.10.10 209.165.200.229
-interface g0/0
+int g0/0
 ip nat outside
-interface loopback 0
+int s0/0/0
 ip nat inside
-ip nat pool INTERNET 209.165.200.225 209.165.200.228 netmask 255.255.255.248
-ip nat inside source list 1 pool INTERNET
-!! ntp
-feature ntp
-ntp master
-
-!! acls
+int s0/0/1
+ip nat inside
+exit
 access-list 1 permit 192.168.31.0 0.0.0.255
 access-list 1 permit 192.168.33.0 0.0.0.255
-access-list 1 permit 192.168.4.0 0.0.0.255
-
-
-
-
-
-
-
+access-list 1 permit 192.168.4.0 0.0.3.255
+ip nat pool INTERNET 209.165.200.225 209.165.200.228 netmask 255.255.255.248
+ip nat inside source list 1 pool INTERNET
+end
+!! ntp
+clock set 09:00:00 05 march 2016
+conf term
+ntp master 5
+!! acls
+ip access-list standard ADMIN-MGT
+permit host 172.16.12.1
+exit 
+line vty 0 15
+access-class ADMIN-MGT in
+transport input telnet
 
