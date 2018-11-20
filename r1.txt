@@ -16,13 +16,54 @@ banner motd %Unauthorized Access is Prohibited!%
 interface s0/0/0
 description Conection to  R2
 ip address 172.16.12.1 255.255.255.252
-ipv6 address 2001:DB8:ACAD:12:1/64
-clockrate 128000
+ipv6 address 2001:DB8:ACAD:12::1/64
+clock rate 128000
 no shutdown 
 ip route 0.0.0.0 0.0.0.0 s0/0/0
 ipv6 route ::/0 s0/0/0
-!! routing
+!! VLAN
+int g0/1.31 
+description Accounting LAN
+encapsulation dot1q 31
+ip address 192.168.31.1 255.255.255.0
+int g0/1.33 
+description Engineering LAN
+encapsulation dot1q 33
+ip address 192.168.33.1 255.255.255.0
+int g0/1.99 
+description Managemenet LAN
+encapsulation dot1q 99
+ip address 192.168.99.1 255.255.255.0
+int g0/1
+no shut
+!! routing 
+exit
+router rip
+version 2
+network 172.16.12.0
+network 192.168.31.0
+network 192.168.33.0
+network 192.168.99.0
+passive-interface g0/1.31
+passive-interface g0/1.33
+passive-interface g0/1.99
+no auto-summary
+!!! do show ip route connected
 !! dchp 
-!! nat
+ip dhcp excluded-address 192.168.31.1 192.168.31.20
+ip dchp excluded-address 192.168.33.1 192.168.33.20
+ip dhcp pool ACCT
+network 192.168.31.0 255.255.255.0
+default-router 192.168.31.1
+dns-server 10.10.10.10
+domain-name ccna-sa.com
+ip dhcp pool ENGRN
+network 192.168.33.0 255.255.255.0
+default-router 192.168.33.1
+dns-server 10.10.10.10
+domain-name ccna-sa.com
+exit
 !! ntp
+ntp server 172.16.12.2
+ntp update-calendar
 !! acls

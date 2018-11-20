@@ -17,7 +17,7 @@ banner motd %Unauthorized Access is Prohibited!%
 interface s0/0/1
 description Conection to  R2
 ip address 172.16.23.1 255.255.255.252
-ipv6 address 2001:DB8:ACAD:23:1/64
+ipv6 address 2001:DB8:ACAD:23::1/64
 no shutdown
 !
 interface loopback 4
@@ -32,7 +32,18 @@ ipv6 address 2001:DB8:ACAD:3::1/64
 ip route 0.0.0.0 0.0.0.0 s0/0/1
 ipv6 route ::/0 s0/0/1
 !! routing
-!! dchp 
+exit 
+router rip
+version 2
+network 172.16.23.0
+network 192.168.4.0
+network 192.168.5.0
+network 192.168.6.0
+passive-interface loopback 4
+passive-interface loopback 5
+passive-interface loopback 6
+no auto-summary
+exit
 !! nat
 !! ntp
 !! acls
